@@ -58,7 +58,9 @@
             <td>${emp.id}</td>
             <td>
               <c:if test="${emp.picture!=null}">
-                <img src="/emp/image/${emp.id}" alt="emp_image" width="150"/>
+                <a href="/emp/image/${emp.id}.png" target="_blank">
+                  <img src="/emp/image/${emp.id}" alt="emp_image" style="max-width: 120px; max-height: 120px"/>
+                </a>
               </c:if>
             </td>
             <td>

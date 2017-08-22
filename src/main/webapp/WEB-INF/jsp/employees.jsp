@@ -13,13 +13,11 @@
 <body>
 
 <div class="container">
-
   <%--add employee form--%>
   <div class="col-md-5">
     <div class="form-area">
       <form:form action="" modelAttribute="employee" method="post">
         <br style="clear:both">
-        <h3 style="margin-bottom: 25px; text-align: center;">Add Employee</h3>
         <div class="form-group">
           <form:input class="form-control" path="name" placeholder="Name"/>
         </div>
@@ -27,10 +25,15 @@
           <form:input type="number" class="form-control" path="salary" placeholder="Salary"/>
         </div>
 
-        <button id="submit" name="submit" class="btn btn-primary pull-right">Add</button>
+        <button id="submit" name="submit" class="btn btn-primary pull-right">Add Employee</button>
       </form:form>
+      <br>
+      <br>
     </div>
   </div>
+</div>
+
+<div class="container">
 
   <%--employee list--%>
   <div class="panel panel-default">
@@ -61,7 +64,7 @@
             <td>
               <form action="/emp/image/${emp.id}" method="post" enctype="multipart/form-data">
                 <input type="file" placeholder="Picture" name="file"/>
-                <button name="submit">Upload photo</button>
+                <button name="submit" class="btn btn-primary">Upload photo</button>
               </form>
             </td>
             <td>${emp.name}</td>

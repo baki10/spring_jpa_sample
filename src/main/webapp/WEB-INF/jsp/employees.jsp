@@ -67,8 +67,7 @@
             <td>${emp.name}</td>
             <td>${emp.salary}</td>
             <td>
-              <a href="/emp/delete?id=${emp.id}"><span class="glyphicon glyphicon-remove-circle"
-                                                       aria-hidden="true"></span></a>
+              <a href="/emp/delete?id=${emp.id}"><span class="glyphicon glyphicon-remove-circle"></span></a>
             </td>
           </tr>
         </c:forEach>

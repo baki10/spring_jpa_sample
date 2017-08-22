@@ -42,8 +42,8 @@
         <thead>
         <tr>
           <th>ID</th>
-          <th></th>
           <th>PHOTO</th>
+          <th></th>
           <th>NAME</th>
           <th>SALARY</th>
           <th>DELETE</th>

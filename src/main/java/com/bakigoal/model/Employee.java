@@ -3,7 +3,9 @@ package com.bakigoal.model;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Basic;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +19,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Employee {
@@ -33,8 +37,8 @@ public class Employee {
 
   @Embedded
   @AttributeOverrides({
-      @AttributeOverride(name="state", column=@Column(name="PROVINCE")),
-      @AttributeOverride(name="zip", column=@Column(name="POSTAL_CODE"))
+      @AttributeOverride(name = "state", column = @Column(name = "PROVINCE")),
+      @AttributeOverride(name = "zip", column = @Column(name = "POSTAL_CODE"))
   })
   private Address address;
 
@@ -60,6 +64,15 @@ public class Employee {
   private List<Phone> phones;
 
   // relationships ends ------------------
+
+  @ElementCollection
+  @CollectionTable(name = "VACATION", joinColumns = @JoinColumn(name = "EMP_ID"))
+  @AttributeOverride(name = "daysTaken", column = @Column(name = "DAYS_ABS"))
+  private Collection<VacationEntry> vacations;
+
+  @ElementCollection
+  @Column(name = "NICKNAME")
+  private Set<String> nickNames;
 
 
   public long getId() {
@@ -132,6 +145,22 @@ public class Employee {
 
   public void setPhones(List<Phone> phones) {
     this.phones = phones;
+  }
+
+  public Collection getVacations() {
+    return vacations;
+  }
+
+  public void setVacations(Collection vacations) {
+    this.vacations = vacations;
+  }
+
+  public Set<String> getNickNames() {
+    return nickNames;
+  }
+
+  public void setNickNames(Set<String> nickNames) {
+    this.nickNames = nickNames;
   }
 }
 

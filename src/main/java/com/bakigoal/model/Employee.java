@@ -1,6 +1,7 @@
 package com.bakigoal.model;
 
 import javax.persistence.Basic;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,6 +27,9 @@ public class Employee {
   @Lob
   @Basic(fetch = FetchType.LAZY)
   private byte[] picture;
+
+  @Embedded
+  private Address address;
 
   // relationships starts ----------------
 
@@ -81,6 +85,14 @@ public class Employee {
 
   public void setPicture(byte[] picture) {
     this.picture = picture;
+  }
+
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
   }
 
   public Department getDepartment() {

@@ -19,7 +19,7 @@ public class Department {
   private String name;
 
   @OneToMany(mappedBy = "department")
-  @OrderBy("name ASC")
+  @OrderBy("lastName ASC")
   private List<Employee> employees;
 
   @OneToMany(mappedBy = "department")

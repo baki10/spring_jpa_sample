@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +19,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.Collection;
@@ -78,9 +80,10 @@ public class Employee {
 
   @ElementCollection
   @CollectionTable(name = "EMP_PHONE_MAP")
+  @MapKeyEnumerated(EnumType.STRING)
   @MapKeyColumn(name = "PHONE_TYPE")
   @Column(name = "PHONE_NUM")
-  private Map<String, String> phoneNumbers;
+  private Map<PhoneType, String> phoneNumbers;
 
   // getters and setters ------------------
 
@@ -172,11 +175,11 @@ public class Employee {
     this.nickNames = nickNames;
   }
 
-  public Map<String, String> getPhoneNumbers() {
+  public Map<PhoneType, String> getPhoneNumbers() {
     return phoneNumbers;
   }
 
-  public void setPhoneNumbers(Map<String, String> phoneNumbers) {
+  public void setPhoneNumbers(Map<PhoneType, String> phoneNumbers) {
     this.phoneNumbers = phoneNumbers;
   }
 }

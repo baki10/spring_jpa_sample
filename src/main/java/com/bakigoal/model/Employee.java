@@ -26,17 +26,22 @@ public class Employee {
   @Lob
   @Basic(fetch = FetchType.LAZY)
   private byte[] picture;
+
   // relationships starts ----------------
+
   @ManyToOne
   @JoinColumn(name = "DEPT_ID")
   private Department department;
-  @OneToOne
+
+  @OneToOne(fetch = FetchType.LAZY)  // overriding the default fetch mode
   private ParkingSpace parkingSpace;
+
   @ManyToMany
   @JoinTable(name = "EMP_PROJ",
       joinColumns = @JoinColumn(name = "EMP_ID"),
       inverseJoinColumns = @JoinColumn(name = "PROJ_ID"))
   private List<Project> projects;
+
   @OneToMany
   @JoinTable(name = "EMP_PHONE",
       joinColumns = @JoinColumn(name = "EMP_ID"),

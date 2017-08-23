@@ -33,7 +33,12 @@ public class Employee {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
-  private String name;
+  @Column(name="F_NAME")
+  private String firstName;
+  @Column(name="L_NAME")
+  private String lastName;
+  @Embedded
+  private EmployeeName name;
   private long salary;
   @Lob
   @Basic(fetch = FetchType.LAZY)
@@ -95,11 +100,27 @@ public class Employee {
     this.id = id;
   }
 
-  public String getName() {
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public EmployeeName getName() {
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(EmployeeName name) {
     this.name = name;
   }
 

@@ -19,7 +19,10 @@
       <form:form action="" modelAttribute="employee" method="post">
         <br style="clear:both">
         <div class="form-group">
-          <form:input class="form-control" path="name" placeholder="Name"/>
+          <form:input class="form-control" path="firstName" placeholder="First Name"/>
+        </div>
+        <div class="form-group">
+          <form:input class="form-control" path="lastName" placeholder="Last Name"/>
         </div>
         <div class="form-group">
           <form:input type="number" class="form-control" path="salary" placeholder="Salary"/>
@@ -69,7 +72,7 @@
                 <button name="submit" class="btn btn-primary">Upload photo</button>
               </form>
             </td>
-            <td>${emp.name}</td>
+            <td>${emp.firstName} ${emp.lastName}</td>
             <td>${emp.salary}</td>
             <td>
               <a href="/emp/delete?id=${emp.id}"><span class="glyphicon glyphicon-remove-circle"></span></a>

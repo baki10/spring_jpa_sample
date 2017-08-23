@@ -26,6 +26,10 @@ public class Department {
   @MapKey(name = "id")
   private Map<Integer, Employee> employeeMap;
 
+  @OneToMany(mappedBy="department")
+  private Map<EmployeeName, Employee> nameEmployeeMap;
+
+
   public long getId() {
     return id;
   }
@@ -56,5 +60,13 @@ public class Department {
 
   public void setEmployeeMap(Map<Integer, Employee> employeeMap) {
     this.employeeMap = employeeMap;
+  }
+
+  public Map<EmployeeName, Employee> getNameEmployeeMap() {
+    return nameEmployeeMap;
+  }
+
+  public void setNameEmployeeMap(Map<EmployeeName, Employee> nameEmployeeMap) {
+    this.nameEmployeeMap = nameEmployeeMap;
   }
 }

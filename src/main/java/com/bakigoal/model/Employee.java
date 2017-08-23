@@ -11,6 +11,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.List;
 
@@ -36,6 +37,12 @@ public class Employee {
       joinColumns = @JoinColumn(name = "EMP_ID"),
       inverseJoinColumns = @JoinColumn(name = "PROJ_ID"))
   private List<Project> projects;
+  @OneToMany
+  @JoinTable(name = "EMP_PHONE",
+      joinColumns = @JoinColumn(name = "EMP_ID"),
+      inverseJoinColumns = @JoinColumn(name = "PHONE_ID"))
+  private List<Phone> phones;
+
   // relationships ends ------------------
 
 
@@ -93,6 +100,14 @@ public class Employee {
 
   public void setProjects(List<Project> projects) {
     this.projects = projects;
+  }
+
+  public List<Phone> getPhones() {
+    return phones;
+  }
+
+  public void setPhones(List<Phone> phones) {
+    this.phones = phones;
   }
 }
 

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Employee {
@@ -25,6 +26,8 @@ public class Employee {
   @ManyToOne
   @JoinColumn(name = "DEPT_ID")
   private Department department;
+  @OneToOne
+  private ParkingSpace parkingSpace;
   // relationships ends ------------------
 
 
@@ -66,6 +69,14 @@ public class Employee {
 
   public void setDepartment(Department department) {
     this.department = department;
+  }
+
+  public ParkingSpace getParkingSpace() {
+    return parkingSpace;
+  }
+
+  public void setParkingSpace(ParkingSpace parkingSpace) {
+    this.parkingSpace = parkingSpace;
   }
 }
 

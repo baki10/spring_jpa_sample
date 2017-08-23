@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,7 @@ public class Department {
   private String name;
 
   @OneToMany(mappedBy = "department")
+  @OrderBy("name ASC")
   private List<Employee> employees;
 
   public long getId() {

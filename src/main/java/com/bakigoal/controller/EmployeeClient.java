@@ -1,7 +1,7 @@
 package com.bakigoal.controller;
 
 import com.bakigoal.model.Employee;
-import com.bakigoal.repository.EmployeeDao;
+import com.bakigoal.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,11 +22,11 @@ import java.util.List;
 public class EmployeeClient {
 
   @Autowired
-  private EmployeeDao employeeDao;
+  private EmployeeService employeeService;
 
   @GetMapping
   public String employees(Model model) {
-    List<Employee> allEmployees = employeeDao.findAllEmployees();
+    List<Employee> allEmployees = employeeService.findAllEmployees();
     model.addAttribute("emps", allEmployees);
     model.addAttribute("employee", new Employee());
     return "employees";
@@ -35,13 +35,13 @@ public class EmployeeClient {
   @GetMapping(value = "/image/{empId}")
   @ResponseBody
   public byte[] image(@PathVariable long empId) {
-    Employee employee = employeeDao.findEmployee(empId);
+    Employee employee = employeeService.findEmployee(empId);
     return employee == null ? new byte[0] : employee.getPicture();
   }
 
   @PostMapping
   public String addEmployee(@ModelAttribute Employee employee) {
-    employeeDao.createEmployee(employee);
+    employeeService.createEmployee(employee);
     return "redirect:/emp/";
   }
 
@@ -53,9 +53,9 @@ public class EmployeeClient {
     try {
       // Get the file and save it somewhere
       byte[] bytes = file.getBytes();
-      Employee employee = employeeDao.findEmployee(empId);
+      Employee employee = employeeService.findEmployee(empId);
       employee.setPicture(bytes);
-      employeeDao.update(employee);
+      employeeService.update(employee);
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -65,7 +65,7 @@ public class EmployeeClient {
 
   @GetMapping("delete")
   public String employee(@RequestParam long id) {
-    employeeDao.removeEmployee(id);
+    employeeService.removeEmployee(id);
     return "redirect:/emp/";
   }
 }

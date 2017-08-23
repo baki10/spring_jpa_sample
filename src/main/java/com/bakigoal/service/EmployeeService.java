@@ -1,7 +1,7 @@
-package com.bakigoal.repository;
+package com.bakigoal.service;
 
 import com.bakigoal.model.Employee;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -9,9 +9,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-@Repository
+@Service
 @Transactional
-public class EmployeeDao {
+public class EmployeeService {
 
   @PersistenceContext
   private EntityManager em;

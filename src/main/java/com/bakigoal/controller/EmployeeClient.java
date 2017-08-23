@@ -34,7 +34,7 @@ public class EmployeeClient {
 
   @GetMapping(value = "/image/{empId}")
   @ResponseBody
-  public byte[] image(@PathVariable int empId) {
+  public byte[] image(@PathVariable long empId) {
     Employee employee = employeeDao.findEmployee(empId);
     return employee == null ? new byte[0] : employee.getPicture();
   }
@@ -46,7 +46,7 @@ public class EmployeeClient {
   }
 
   @PostMapping("/image/{empId}")
-  public String uploadPhoto(@RequestParam("file") MultipartFile file, @PathVariable int empId) {
+  public String uploadPhoto(@RequestParam("file") MultipartFile file, @PathVariable long empId) {
     if (file.isEmpty()) {
       return "redirect:/emp/";
     }
@@ -64,7 +64,7 @@ public class EmployeeClient {
   }
 
   @GetMapping("delete")
-  public String employee(@RequestParam int id) {
+  public String employee(@RequestParam long id) {
     employeeDao.removeEmployee(id);
     return "redirect:/emp/";
   }

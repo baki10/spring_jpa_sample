@@ -21,7 +21,7 @@ public class EmployeeDao {
     return employee;
   }
 
-  public void removeEmployee(int id) {
+  public void removeEmployee(long id) {
     Employee emp = findEmployee(id);
     if (emp != null) {
       em.remove(emp);
@@ -32,7 +32,7 @@ public class EmployeeDao {
     em.merge(employee);
   }
 
-  public Employee findEmployee(int id) {
+  public Employee findEmployee(long id) {
     return em.find(Employee.class, id);
   }
 

@@ -6,7 +6,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Employee {
@@ -19,6 +21,12 @@ public class Employee {
   @Lob
   @Basic(fetch = FetchType.LAZY)
   private byte[] picture;
+  // relationships starts ----------------
+  @ManyToOne
+  @JoinColumn(name = "DEPT_ID")
+  private Department department;
+  // relationships ends ------------------
+
 
   public long getId() {
     return id;
@@ -50,6 +58,14 @@ public class Employee {
 
   public void setPicture(byte[] picture) {
     this.picture = picture;
+  }
+
+  public Department getDepartment() {
+    return department;
+  }
+
+  public void setDepartment(Department department) {
+    this.department = department;
   }
 }
 

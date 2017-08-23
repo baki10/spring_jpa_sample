@@ -17,10 +17,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -74,6 +76,13 @@ public class Employee {
   @Column(name = "NICKNAME")
   private Set<String> nickNames;
 
+  @ElementCollection
+  @CollectionTable(name = "EMP_PHONE_MAP")
+  @MapKeyColumn(name = "PHONE_TYPE")
+  @Column(name = "PHONE_NUM")
+  private Map<String, String> phoneNumbers;
+
+  // getters and setters ------------------
 
   public long getId() {
     return id;
@@ -147,11 +156,11 @@ public class Employee {
     this.phones = phones;
   }
 
-  public Collection getVacations() {
+  public Collection<VacationEntry> getVacations() {
     return vacations;
   }
 
-  public void setVacations(Collection vacations) {
+  public void setVacations(Collection<VacationEntry> vacations) {
     this.vacations = vacations;
   }
 
@@ -161,6 +170,14 @@ public class Employee {
 
   public void setNickNames(Set<String> nickNames) {
     this.nickNames = nickNames;
+  }
+
+  public Map<String, String> getPhoneNumbers() {
+    return phoneNumbers;
+  }
+
+  public void setPhoneNumbers(Map<String, String> phoneNumbers) {
+    this.phoneNumbers = phoneNumbers;
   }
 }
 

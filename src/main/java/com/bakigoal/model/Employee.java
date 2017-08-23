@@ -3,6 +3,7 @@ package com.bakigoal.model;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -33,9 +34,9 @@ public class Employee {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
-  @Column(name="F_NAME")
+  @Column(name = "F_NAME")
   private String firstName;
-  @Column(name="L_NAME")
+  @Column(name = "L_NAME")
   private String lastName;
   @Embedded
   private EmployeeName name;
@@ -53,11 +54,15 @@ public class Employee {
 
   // relationships starts ----------------
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "DEPT_ID")
   private Department department;
 
-  @OneToOne(fetch = FetchType.LAZY)  // overriding the default fetch mode
+  /**
+   * There are really only two cases in which cascading the remove() operation makes sense: one-to-one
+   * and one-to-many relationships, in which there is a clear parent-child relationship
+   */
+  @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
   private ParkingSpace parkingSpace;
 
   @ManyToMany
@@ -66,7 +71,7 @@ public class Employee {
       inverseJoinColumns = @JoinColumn(name = "PROJ_ID"))
   private List<Project> projects;
 
-  @OneToMany
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
   @JoinTable(name = "EMP_PHONE",
       joinColumns = @JoinColumn(name = "EMP_ID"),
       inverseJoinColumns = @JoinColumn(name = "PHONE_ID"))

@@ -2,6 +2,7 @@ package com.bakigoal.service;
 
 import com.bakigoal.model.Department;
 import com.bakigoal.model.Employee;
+import com.bakigoal.model.ParkingSpace;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,11 +59,24 @@ public class EmployeeService {
     // the new entity will be stored in the database
   }
 
+  /**
+   * At its most basic, removing an entity is simply a case of passing a managed entity instance
+   * to the remove() method of an entity manager. As soon as the associated persistence context becomes synchronized
+   * with a transaction and commits, the entity is removed
+   */
   public void removeEmployee(long id) {
     Employee emp = findEmployee(id);
     if (emp != null) {
       em.remove(emp);
     }
+  }
+
+  public void removeParkingSpace(long empId) {
+    Employee emp = em.find(Employee.class, empId);
+    ParkingSpace ps = emp.getParkingSpace();
+    //necessary to avoid an exception containing a DB error that shows that we have violated a foreign key constraint
+    emp.setParkingSpace(null);
+    em.remove(ps);
   }
 
   public void update(Employee employee) {

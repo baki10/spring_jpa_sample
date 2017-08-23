@@ -1,6 +1,9 @@
 package com.bakigoal.model;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,6 +32,10 @@ public class Employee {
   private byte[] picture;
 
   @Embedded
+  @AttributeOverrides({
+      @AttributeOverride(name="state", column=@Column(name="PROVINCE")),
+      @AttributeOverride(name="zip", column=@Column(name="POSTAL_CODE"))
+  })
   private Address address;
 
   // relationships starts ----------------

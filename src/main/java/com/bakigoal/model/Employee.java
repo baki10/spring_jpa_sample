@@ -7,9 +7,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import java.util.List;
 
 @Entity
 public class Employee {
@@ -28,6 +31,11 @@ public class Employee {
   private Department department;
   @OneToOne
   private ParkingSpace parkingSpace;
+  @ManyToMany
+  @JoinTable(name = "EMP_PROJ",
+      joinColumns = @JoinColumn(name = "EMP_ID"),
+      inverseJoinColumns = @JoinColumn(name = "PROJ_ID"))
+  private List<Project> projects;
   // relationships ends ------------------
 
 
@@ -77,6 +85,14 @@ public class Employee {
 
   public void setParkingSpace(ParkingSpace parkingSpace) {
     this.parkingSpace = parkingSpace;
+  }
+
+  public List<Project> getProjects() {
+    return projects;
+  }
+
+  public void setProjects(List<Project> projects) {
+    this.projects = projects;
   }
 }
 

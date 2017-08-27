@@ -15,6 +15,13 @@ import javax.persistence.TypedQuery;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Query Best Practices
+ * <p>
+ * 1) First and foremost, we recommend named queries whenever possible
+ * 2) If you are executing queries that return entities for reporting purposes and have no intention of modifying
+ * the results, consider executing queries using a transaction-scoped entity manager but outside of a transaction
+ */
 @Service
 @Transactional
 public class QueryService {

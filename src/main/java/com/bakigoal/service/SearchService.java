@@ -27,7 +27,7 @@ public class SearchService {
 
   public List<Employee> fetch() {
     String query = "SELECT e " +
-        "FROM Employee e JOIN FETCH e.address";
+        "FROM Employee e JOIN FETCH e.phones";
     return em.createQuery(query, Employee.class).getResultList();
   }
 
@@ -35,7 +35,7 @@ public class SearchService {
     CriteriaBuilder builder = em.getCriteriaBuilder();
     CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
     Root<Employee> emp = query.from(Employee.class);
-    emp.fetch("address");
+    emp.fetch("phones");
     query.select(emp);
 
     TypedQuery<Employee> departmentTypedQuery = em.createQuery(query);

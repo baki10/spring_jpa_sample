@@ -15,6 +15,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,43 +130,50 @@ public class SearchService {
   public List<Employee> findEmployeesCriteriaAPI(String name, String deptName,
                                                  String projectName, String city) {
 
-    CriteriaBuilder builder = em.getCriteriaBuilder();
-    CriteriaQuery<Employee> cq = builder.createQuery(Employee.class);
-    Root<Employee> emp = cq.from(Employee.class);
-    cq.select(emp);
-    cq.distinct(true);
-    Join<Employee, Project> project = emp.join("projects", JoinType.LEFT);
+    CriteriaBuilder cb = em.getCriteriaBuilder();
+    CriteriaQuery<Employee> c = cb.createQuery(Employee.class);
+    Root<Employee> emp = c.from(Employee.class);
+    c.select(emp);
+    c.distinct(true);
 
     List<Predicate> criteria = new ArrayList<>();
     if (name != null) {
-      criteria.add(builder.equal(emp.get("name"), builder.parameter(String.class, "name")));
+      criteria.add(cb.equal(emp.get("name"), cb.parameter(String.class, "name")));
     }
     if (deptName != null) {
-      criteria.add(builder.equal(emp.get("dept").get("name"), builder.parameter(String.class, "dept")));
+      criteria.add(cb.equal(emp.get("dept").get("name"), cb.parameter(String.class, "dept")));
     }
     if (projectName != null) {
-      criteria.add(builder.equal(project.get("name"), builder.parameter(String.class, "project")));
+      //Join<Employee, Project> project = emp.join("projects", JoinType.LEFT);
+      //criteria.add(cb.equal(project.get("name"), cb.parameter(String.class, "project")));
+      Subquery<Employee> sq = c.subquery(Employee.class);
+      Root<Project> project = sq.from(Project.class);
+      Join<Project,Employee> sqEmp = project.join("employees");
+      sq.select(sqEmp)
+          .where(cb.equal(project.get("name"), cb.parameter(String.class, "project")));
+      criteria.add(cb.in(emp).value(sq));
+
     }
     if (city != null) {
-      criteria.add(builder.equal(emp.get("address").get("city"), builder.parameter(String.class, "city")));
+      criteria.add(cb.equal(emp.get("address").get("city"), cb.parameter(String.class, "city")));
     }
 
     if (criteria.size() == 0) {
       throw new RuntimeException("no criteria");
     } else if (criteria.size() == 1) {
-      cq.where(criteria.get(0));
+      c.where(criteria.get(0));
     } else {
-      cq.where(builder.and(criteria.toArray(new Predicate[0])));
+      c.where(cb.and(criteria.toArray(new Predicate[0])));
     }
 
-    TypedQuery<Employee> q = em.createQuery(cq);
+    TypedQuery<Employee> q = em.createQuery(c);
     if (name != null) {
       q.setParameter("name", name);
     }
     if (deptName != null) {
       q.setParameter("dept", deptName);
     }
-    if (project != null) {
+    if (projectName != null) {
       q.setParameter("project", projectName);
     }
     if (city != null) {

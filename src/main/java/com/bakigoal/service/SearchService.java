@@ -25,6 +25,25 @@ public class SearchService {
   @PersistenceContext
   private EntityManager em;
 
+  public List<Employee> pathExpressions(){
+   String query =
+       "SELECT e " +
+       "FROM Employee e " +
+       "WHERE e.address.city = 'New York'";
+    return em.createQuery(query, Employee.class).getResultList();
+  }
+
+  public List<Employee> pathExpressionsCriteriaAPI(){
+    CriteriaBuilder builder = em.getCriteriaBuilder();
+    CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+    Root<Employee> emp = query.from(Employee.class);
+    query.select(emp)
+        .where(builder.equal(emp.get("address").get("city"), "New York"));
+
+    TypedQuery<Employee> departmentTypedQuery = em.createQuery(query);
+    return departmentTypedQuery.getResultList();
+  }
+
   public List<Department> findDepartments(){
     String query =
         "SELECT DISTINCT d " +

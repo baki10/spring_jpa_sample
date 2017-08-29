@@ -55,6 +55,7 @@ public class SearchService {
   public List<Department> findDepartmentsCriteriaAPI(){
     CriteriaBuilder builder = em.getCriteriaBuilder();
     CriteriaQuery<Department> query = builder.createQuery(Department.class);
+    // Always store the root objects locally and refer to them when necessary
     Root<Employee> emp = query.from(Employee.class);
     Root<Department> dept = query.from(Department.class);
 

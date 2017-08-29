@@ -1,5 +1,6 @@
 package com.bakigoal.service;
 
+import com.bakigoal.model.Department;
 import com.bakigoal.model.Employee;
 import com.bakigoal.model.Project;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,28 @@ public class SearchService {
 
   @PersistenceContext
   private EntityManager em;
+
+  public List<Department> findDepartments(){
+    String query =
+        "SELECT DISTINCT d " +
+        "FROM Department d, Employee e " +
+        "WHERE d = e.department";
+    return em.createQuery(query, Department.class).getResultList();
+  }
+
+  public List<Department> findDepartmentsCriteriaAPI(){
+    CriteriaBuilder builder = em.getCriteriaBuilder();
+    CriteriaQuery<Department> query = builder.createQuery(Department.class);
+    Root<Employee> emp = query.from(Employee.class);
+    Root<Department> dept = query.from(Department.class);
+
+    query.select(dept)
+        .distinct(true)
+        .where(builder.equal(dept, emp.get("department")));
+
+    TypedQuery<Department> departmentTypedQuery = em.createQuery(query);
+    return departmentTypedQuery.getResultList();
+  }
 
   public List<Employee> findEmployees(String name, String deptName,
                                       String projectName, String city) {

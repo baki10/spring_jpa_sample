@@ -25,15 +25,31 @@ public class SearchService {
   @PersistenceContext
   private EntityManager em;
 
-  public List<Employee> pathExpressions(){
-   String query =
-       "SELECT e " +
-       "FROM Employee e " +
-       "WHERE e.address.city = 'New York'";
+  public List<Employee> fetch() {
+    String query = "SELECT e " +
+        "FROM Employee e JOIN FETCH e.address";
     return em.createQuery(query, Employee.class).getResultList();
   }
 
-  public List<Employee> pathExpressionsCriteriaAPI(){
+  public List<Employee> fetchCriteriaAPI() {
+    CriteriaBuilder builder = em.getCriteriaBuilder();
+    CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+    Root<Employee> emp = query.from(Employee.class);
+    emp.fetch("address");
+    query.select(emp);
+
+    TypedQuery<Employee> departmentTypedQuery = em.createQuery(query);
+    return departmentTypedQuery.getResultList();
+  }
+
+  public List<Employee> pathExpressions() {
+    String query = "SELECT e " +
+        "FROM Employee e " +
+        "WHERE e.address.city = 'New York'";
+    return em.createQuery(query, Employee.class).getResultList();
+  }
+
+  public List<Employee> pathExpressionsCriteriaAPI() {
     CriteriaBuilder builder = em.getCriteriaBuilder();
     CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
     Root<Employee> emp = query.from(Employee.class);
@@ -44,15 +60,14 @@ public class SearchService {
     return departmentTypedQuery.getResultList();
   }
 
-  public List<Department> findDepartments(){
-    String query =
-        "SELECT DISTINCT d " +
+  public List<Department> findDepartments() {
+    String query = "SELECT DISTINCT d " +
         "FROM Department d, Employee e " +
         "WHERE d = e.department";
     return em.createQuery(query, Department.class).getResultList();
   }
 
-  public List<Department> findDepartmentsCriteriaAPI(){
+  public List<Department> findDepartmentsCriteriaAPI() {
     CriteriaBuilder builder = em.getCriteriaBuilder();
     CriteriaQuery<Department> query = builder.createQuery(Department.class);
     // Always store the root objects locally and refer to them when necessary

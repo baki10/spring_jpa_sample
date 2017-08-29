@@ -26,6 +26,33 @@ public class SearchService {
   @PersistenceContext
   private EntityManager em;
 
+  public List<Employee> subQuery(String projectName) {
+    String query = "SELECT e " +
+        "FROM Employee e " +
+        "WHERE EXISTS " +
+        "(SELECT p FROM e.projects p WHERE p.name = :name)";
+    return em.createQuery(query, Employee.class).getResultList();
+  }
+
+  public List<Employee> subQueryCriteriaAPI(String projectName) {
+    CriteriaBuilder builder = em.getCriteriaBuilder();
+    CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+    Root<Employee> emp = query.from(Employee.class);
+
+    Subquery<Project> sq = query.subquery(Project.class);
+    Root<Employee> sqEmp = sq.correlate(emp);
+    Join<Employee,Project> project = sqEmp.join("projects");
+    sq.select(project)
+        .where(builder.equal(project.get("name"), builder.parameter(String.class,"project")));
+    Predicate exists = builder.exists(sq);
+
+    query.select(emp)
+        .where(exists);
+
+    TypedQuery<Employee> departmentTypedQuery = em.createQuery(query);
+    return departmentTypedQuery.getResultList();
+  }
+
   public List<Employee> fetch() {
     String query = "SELECT e " +
         "FROM Employee e JOIN FETCH e.phones";
@@ -148,7 +175,7 @@ public class SearchService {
       //criteria.add(cb.equal(project.get("name"), cb.parameter(String.class, "project")));
       Subquery<Employee> sq = c.subquery(Employee.class);
       Root<Project> project = sq.from(Project.class);
-      Join<Project,Employee> sqEmp = project.join("employees");
+      Join<Project, Employee> sqEmp = project.join("employees");
       sq.select(sqEmp)
           .where(cb.equal(project.get("name"), cb.parameter(String.class, "project")));
       criteria.add(cb.in(emp).value(sq));

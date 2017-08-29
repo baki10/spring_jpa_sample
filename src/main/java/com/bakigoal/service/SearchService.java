@@ -35,7 +35,7 @@ public class SearchService {
     CriteriaBuilder builder = em.getCriteriaBuilder();
     CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
     Root<Employee> emp = query.from(Employee.class);
-    emp.fetch("phones");
+    emp.fetch("phones", JoinType.LEFT);
     query.select(emp);
 
     TypedQuery<Employee> departmentTypedQuery = em.createQuery(query);
